@@ -1,0 +1,5 @@
+<root>
+    <item name='com.aerisweather.aeris.maps.MapOptionsActivity'>
+        <annotation name='java.lang.Deprecated' />
+    </item>
+</root>

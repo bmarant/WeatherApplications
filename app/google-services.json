@@ -1,0 +1,94 @@
+{
+  "project_info": {
+    "project_number": "707237093906",
+    "firebase_url": "https://weather-application-174120.firebaseio.com",
+    "project_id": "weather-application-174120",
+    "storage_bucket": "weather-application-174120.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707237093906:android:eb19e8403fe7dceb",
+        "android_client_info": {
+          "package_name": "weatherapplication.barant2003.com.weatherapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707237093906-jb2ivtmabkdi8aq6ger1porpgn36l0tl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "707237093906-c5pg1aovtc5oj01o3dik5eiqdg148pi8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzf1G5BtXVu_H0yXR11hnqlwJzIn0nJZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707237093906:android:c1c8bd7f99308e49",
+        "android_client_info": {
+          "package_name": "weatherapp.barant2003.com.weatherapplications"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707237093906-p9kl22uni1560n121j2dgi30nij5brcp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "weatherapp.barant2003.com.weatherapplications",
+            "certificate_hash": "a2cf6b30fe0b8ee7bdbb0488f1f1fc418abebcb5"
+          }
+        },
+        {
+          "client_id": "707237093906-jb2ivtmabkdi8aq6ger1porpgn36l0tl.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "707237093906-c5pg1aovtc5oj01o3dik5eiqdg148pi8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzf1G5BtXVu_H0yXR11hnqlwJzIn0nJZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707237093906-jb2ivtmabkdi8aq6ger1porpgn36l0tl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
