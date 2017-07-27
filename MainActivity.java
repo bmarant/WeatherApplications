@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity
     private InputStream is;
     private String urls;
     private InputStream in;
+    private Menu menuItems;
+    private MenuItem weatherItems;
     private String IMG_URL = "http://openweathermap.org/img/w/";
     private String JsonWeather = "http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139&units=imperial&appid=f0c8fd49bf50b32e87bf36220a670ad4";
     private ImageView nav_image;
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity
         city = (TextView) view.findViewById(R.id.cityAndState);
         nav_image = (ImageView) view.findViewById(R.id.nav_weather_icon);
         temps = (TextView) view.findViewById(R.id.temp);
+        menuItems = navigationView.getMenu();
 
         updateLocationUI();
 
@@ -305,9 +308,29 @@ public class MainActivity extends AppCompatActivity
             String citys = jsonObj.getString("name");
             String weahterIcon = jsonWeatherInfo.getString("icon");
             Double temperature = temp.getDouble("temp");
+            String baramoter =  temp.getString("pressure");
+            Double high = temp.getDouble("temp_max");
+            Double low = temp.getDouble("temp_min");
+            JSONObject wind = jsonObj.getJSONObject("wind");
+            String winds = wind.getString("speed");
+            String deg = wind.getString("deg");
+
+
             city.setText(citys + "," + states);
             temps.setText(String.format("%.1f", +temperature) + "F°");
+
             getImage(weahterIcon);
+
+
+            weatherItems = menuItems.findItem(R.id.barometer);
+            weatherItems.setTitle("Barometer: " +baramoter + " hPa");
+            MenuItem speed = menuItems.findItem(R.id.windSpeed);
+            speed.setTitle("Wind Speed: " + winds + " Mph");
+            MenuItem degrees = menuItems.findItem(R.id.windDirection);
+            degrees.setTitle("Wind Direction: " + deg +"°");
+            MenuItem highs = menuItems.findItem(R.id.locationhl);
+            highs.setTitle("Your Location " +"H: "+ String.format("%.1f", +high) + "F° " +"L: "+ String.format("%.1f", +low) + "F°");
+
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -391,8 +414,27 @@ public class MainActivity extends AppCompatActivity
             String citys = jsonObj.getString("name");
             String weahterIcon = jsonWeatherInfo.getString("icon");
             Double temperature = temp.getDouble("temp");
+            String baramoter =  temp.getString("pressure");
+            Double high = temp.getDouble("temp_max");
+            Double low = temp.getDouble("temp_min");
+            JSONObject wind = jsonObj.getJSONObject("wind");
+            String winds = wind.getString("speed");
+            String deg = wind.getString("deg");
 
             getImage(weahterIcon);
+
+            weatherItems = menuItems.findItem(R.id.barometer);
+            weatherItems.setTitle("Barometer" +baramoter);
+
+            weatherItems = menuItems.findItem(R.id.barometer);
+            weatherItems.setTitle("Barometer: " +baramoter + " hPa");
+            MenuItem speed = menuItems.findItem(R.id.windSpeed);
+            speed.setTitle("Wind Speed: " + winds + " Mph");
+            MenuItem degrees = menuItems.findItem(R.id.windDirection);
+            degrees.setTitle("Wind Direction " + deg +"°");
+            MenuItem highs = menuItems.findItem(R.id.locationhl);
+            highs.setTitle("Your Location " +"H: "+ String.format("%.1f", +high) + "F°" +"L: "+ String.format("%.1f", +low) + "F°");
+
             FragmentManager fm = getFragmentManager();
 
 //if you added fragment via layout xml
@@ -456,7 +498,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-                         private void buildGoogleAPi() {
+    private void buildGoogleAPi() {
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */,
                         this /* OnConnectionFailedListener */)
