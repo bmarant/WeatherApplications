@@ -3,6 +3,7 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/WeatherFlying" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/app/src/main/java/weatherapp/barant2003/com/weatherapplications" vcs="Git" />
   </component>
 </project>

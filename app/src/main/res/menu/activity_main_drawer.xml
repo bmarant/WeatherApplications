@@ -32,5 +32,24 @@
                 android:title="Send" />
         </menu>
     </item>
+    <item android:title="Your Location" android:id="@+id/locationhl">
+        <menu>
+            <item
+                android:id="@+id/barometer"
+                android:title="Barometer"
+                />
+            <item
+                android:id="@+id/windSpeed"
+                android:title="Wind Speed"
+                />
+            <item
+                android:id="@+id/windDirection"
+                android:title="Wind Direction"
+                />
+
+
+
+        </menu>
+    </item>
 
 </menu>
