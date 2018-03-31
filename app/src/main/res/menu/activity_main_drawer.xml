@@ -3,19 +3,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/flight_planner"
             android:icon="@drawable/ic_menu_camera"
             android:title="Flight Planner" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/flight_history"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Flight History" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/fuel_consumption"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Fuel Consumption" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/flight_pictures"
             android:icon="@drawable/ic_menu_manage"
             android:title="Flight Pictures" />
     </group>
@@ -48,8 +48,19 @@
                 />
 
 
-
         </menu>
     </item>
+    <item
+        android:id="@+id/returnTo"
+        android:title="Options" >
+        <menu >
+          <item
+              android:title="Return to Weather"
+              android:id="@+id/returnMap"
+              >
+
+          </item>
+        </menu>
+</item>
 
 </menu>

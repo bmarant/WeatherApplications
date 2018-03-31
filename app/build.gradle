@@ -1,15 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "weatherapp.barant2003.com.weatherapplications"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -17,33 +18,38 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
 repositories {
     mavenCentral()
 }
 dependencies {
+    implementation 'com.android.support:support-vector-drawable:26.1.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.gms:play-services:11.0.2'
+    compile 'com.google.android.gms:play-services:12.0.0'
     compile 'com.google.code.gson:gson:2.7'
-    compile 'com.google.android.gms:play-services-location:11.0.2'
-    compile 'com.google.android.gms:play-services-maps:11.0.2'
+    compile 'com.google.android.gms:play-services-location:12.0.0'
+    compile 'com.google.android.gms:play-services-maps:12.0.0'
     compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
     compile 'com.aerisweather:aeris-core-lib:2.0.0_Beta3@aar'
     compile 'com.aerisweather:aeris-maps-lib:2.0.0_Beta3@aar'
     compile 'com.jakewharton:butterknife:8.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.google.firebase:firebase-auth:11.0.2'
-    compile 'com.google.firebase:firebase-core:11.0.2'
-    compile 'com.google.firebase:firebase-messaging:11.0.2'
+    compile 'com.google.firebase:firebase-auth:12.0.0'
+    compile 'com.google.firebase:firebase-core:12.0.0'
+    compile 'com.google.firebase:firebase-messaging:12.0.0'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
