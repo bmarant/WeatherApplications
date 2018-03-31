@@ -1,54 +1,34 @@
 package weatherapp.barant2003.com.weatherapplications;
 
 import android.Manifest;
-
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import weatherapp.barant2003.com.weatherapplications.MainActivity;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aerisweather.aeris.communication.Aeris;
 import com.aerisweather.aeris.communication.AerisCallback;
 import com.aerisweather.aeris.communication.AerisEngine;
 import com.aerisweather.aeris.communication.EndpointType;
@@ -77,48 +57,29 @@ import com.aerisweather.aeris.response.RecordsResponse;
 import com.aerisweather.aeris.response.StormCellResponse;
 import com.aerisweather.aeris.response.StormReportsResponse;
 import com.aerisweather.aeris.tiles.AerisAmp;
-import com.aerisweather.aeris.tiles.AerisAmpAnimationInfo;
 import com.aerisweather.aeris.tiles.AerisAmpGetLayersTask;
 import com.aerisweather.aeris.tiles.AerisAmpLayer;
 import com.aerisweather.aeris.tiles.AerisAmpOnGetLayersTaskCompleted;
 import com.aerisweather.aeris.tiles.AerisPointData;
 import com.aerisweather.aeris.tiles.AerisPolygonData;
-
 import com.aerisweather.aeris.tiles.AerisTile;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.Projection;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.text.Text;
-
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static android.R.attr.x;
 import static android.content.Context.LOCATION_SERVICE;
 
 
@@ -188,15 +149,15 @@ public class Map_Fragment extends Fragment implements
         AerisEngine.initWithKeys(this.getActivity().getString(R.string.aerisapi_client_id), this.getString(R.string.aerisapi_client_secret), getActivity());
 
         view = inflater.inflate(R.layout.map_fragment, container, false);
-        AerisMapContainerView mapContainer = (AerisMapContainerView) view.findViewById(R.id.maps);
+        AerisMapContainerView mapContainer = view.findViewById(R.id.maps);
 
-        cross = (ImageView) view.findViewById(R.id.imageButton);
+        cross = view.findViewById(R.id.imageButton);
 
 
        // navigationView.setNavigationItemSelectedListener(this);
 
 
-        nav = (BottomNavigationView) view.findViewById(R.id.navigation);
+        nav = view.findViewById(R.id.navigation);
 
 
         nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -389,14 +350,14 @@ public class Map_Fragment extends Fragment implements
     }
     public void setTemp(String temps)
     {
-        TextView tempView = (TextView)getActivity().findViewById(R.id.temp);
+        TextView tempView = getActivity().findViewById(R.id.temp);
         tempView.setText(temps);
     }
 
 
     public void setText(String text)
    {
-       TextView setText = (TextView)getActivity().findViewById(R.id.cityAndState);
+       TextView setText = getActivity().findViewById(R.id.cityAndState);
        setText.setText(text);
    }
     private void buildGoogleAPi() {

@@ -1,17 +1,10 @@
 package weatherapp.barant2003.com.weatherapplications;
 
-import android.animation.IntEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.DownloadManager;
-import android.support.v4.app.Fragment;
-
-import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,78 +17,36 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
-import android.preference.PreferenceManager;
-import android.service.voice.VoiceInteractionSession;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
+import android.view.MotionEvent;
+import android.view.View;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aerisweather.aeris.communication.Aeris;
-import com.aerisweather.aeris.communication.AerisCallback;
-import com.aerisweather.aeris.communication.AerisEngine;
-import com.aerisweather.aeris.communication.EndpointType;
-import com.aerisweather.aeris.communication.loaders.ObservationsTaskCallback;
-import com.aerisweather.aeris.location.LocationHelper;
-import com.aerisweather.aeris.maps.AerisMapContainerView;
-import com.aerisweather.aeris.maps.AerisMapOptions;
-import com.aerisweather.aeris.maps.AerisMapView;
-import com.aerisweather.aeris.maps.MapOptionsActivity;
-import com.aerisweather.aeris.maps.MapOptionsActivityBuilder;
-import com.aerisweather.aeris.model.AerisError;
-import com.aerisweather.aeris.model.AerisPermissions;
-import com.aerisweather.aeris.model.AerisResponse;
-import com.aerisweather.aeris.response.ObservationResponse;
-import com.aerisweather.aeris.tiles.AerisAmp;
-import com.aerisweather.aeris.tiles.AerisAmpGetLayersTask;
-import com.aerisweather.aeris.tiles.AerisAmpLayer;
-import com.aerisweather.aeris.tiles.AerisAmpOnGetLayersTaskCompleted;
-import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.GroundOverlay;
-import com.google.android.gms.maps.model.GroundOverlayOptions;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.TileOverlay;
-import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.model.TileProvider;
-import com.google.android.gms.maps.model.UrlTileProvider;
-import com.google.android.gms.vision.text.Text;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,20 +58,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.ExecutionException;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission_group.CAMERA;
-import static com.aerisweather.aeris.maps.MapOptionsActivity.*;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnTouchListener, GoogleMap.OnCameraMoveListener {
@@ -172,7 +118,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         checkPermission();
         requestPermission();
@@ -184,23 +130,23 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View view = navigationView.getHeaderView(0);
-        city = (TextView) view.findViewById(R.id.cityAndState);
-        nav_image = (ImageView) view.findViewById(R.id.nav_weather_icon);
-        temps = (TextView) view.findViewById(R.id.temp);
+        city = view.findViewById(R.id.cityAndState);
+        nav_image = view.findViewById(R.id.nav_weather_icon);
+        temps = view.findViewById(R.id.temp);
         menuItems = navigationView.getMenu();
         mHandler = new Handler();
 
-        swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.refreshing);
+        swipeRefresh = findViewById(R.id.refreshing);
 
      //   updateLocationUI();
 
@@ -582,7 +528,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -670,7 +616,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
