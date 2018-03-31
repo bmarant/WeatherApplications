@@ -1,7 +1,9 @@
 package weatherapp.barant2003.com.weatherapplications;
 
 import android.Manifest;
-import android.app.Fragment;
+
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,14 +17,24 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import weatherapp.barant2003.com.weatherapplications.MainActivity;
+
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -110,13 +122,17 @@ import static android.R.attr.x;
 import static android.content.Context.LOCATION_SERVICE;
 
 
+@RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
 public class Map_Fragment extends Fragment implements
         OnAerisMapLongClickListener, AerisCallback, ObservationsTaskCallback,
         OnAerisMarkerInfoWindowClickListener, RefreshInterface, OnMapReadyCallback,  AerisMapContainerView.OnTouchListener, GoogleMap.OnCameraMoveListener {
+
+
     private LocationHelper m_locHelper;
     private Marker m_marker;
     //private TemperatureWindowAdapter m_infoAdapter;
 
+    Context mContext;
     LayoutInflater m_inflater;
     ViewGroup m_container;
     Bundle m_savedInstanceState;
@@ -154,7 +170,13 @@ public class Map_Fragment extends Fragment implements
     ImageView cross;
     BottomNavigationView nav;
     boolean switchIcon = false;
+    boolean switchAdvisories = false;
+    private Handler mHandler;
+    private Runnable refresh;
+    private View view;
 
+
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -165,17 +187,21 @@ public class Map_Fragment extends Fragment implements
         m_savedInstanceState = savedInstanceState;
         AerisEngine.initWithKeys(this.getActivity().getString(R.string.aerisapi_client_id), this.getString(R.string.aerisapi_client_secret), getActivity());
 
-        View view = inflater.inflate(R.layout.map_fragment, container, false);
+        view = inflater.inflate(R.layout.map_fragment, container, false);
         AerisMapContainerView mapContainer = (AerisMapContainerView) view.findViewById(R.id.maps);
-        cross = (ImageView)view.findViewById(R.id.imageButton);
 
-        nav = (BottomNavigationView)view.findViewById(R.id.navigation);
+        cross = (ImageView) view.findViewById(R.id.imageButton);
 
+
+       // navigationView.setNavigationItemSelectedListener(this);
+
+
+        nav = (BottomNavigationView) view.findViewById(R.id.navigation);
 
 
         nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public boolean onNavigationItemSelected(final MenuItem item) {
                 switch(item.getItemId())
                 {
                     case R.id.navigation_home:
@@ -184,13 +210,16 @@ public class Map_Fragment extends Fragment implements
                         break;
                     case R.id.play_anim:
                         switchIcon =! switchIcon;
+
                         if(switchIcon) {
+
                             item.setIcon(R.drawable.ic_pause_black_24dp);
                             m_aerisMapView.onPlayPressed();
 
 
 
                         }
+
                         else
                         {
                             item.setIcon(R.drawable.ic_play_arrow_blue_600_24dp);
@@ -199,6 +228,24 @@ public class Map_Fragment extends Fragment implements
 
 
                         }
+                    case R.id.advisories:
+                        switchAdvisories =! switchAdvisories;
+
+
+
+                        if(switchAdvisories)
+                        {
+                            m_aerisMapView.addLayer(AerisTile.ADVISORIES);
+                        }
+                        else
+                        {
+                            m_aerisMapView.addLayer(AerisTile.NONE);
+                        }
+
+
+
+
+
 
 
 
@@ -209,8 +256,9 @@ public class Map_Fragment extends Fragment implements
             }
         });
 
-
         cross.setOnTouchListener(this);
+
+
 
 
         m_aerisMapView = mapContainer.getAerisMapView();
@@ -219,7 +267,7 @@ public class Map_Fragment extends Fragment implements
 
         //create an instance of the AerisAMP class
         m_aerisAmp = new AerisAmp(getString(R.string.aerisapi_client_id), getString(R.string.aerisapi_client_secret));
-buildGoogleAPi();
+        buildGoogleAPi();
         //start the task to get the AMP layers
         try {
             //get all the possible layers, then get permissions from the API and generate a list of permissible layers
@@ -232,8 +280,12 @@ buildGoogleAPi();
         return view;
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        updateLocationUI();
+
         m_isMapReady = true;
         m_googleMap = googleMap;
 
@@ -391,9 +443,15 @@ buildGoogleAPi();
                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
         } else {
             Log.d(TAG, "Current location is null. Using defaults.");
+            if(mDefaultLocation == null)
+            {
 
-            m_googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
-            m_googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+            }
+            else {
+
+                m_googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+                m_googleMap.getUiSettings().setMyLocationButtonEnabled(false);
+            }
 
         }
     }
@@ -409,6 +467,11 @@ buildGoogleAPi();
             return true;
         }
         return false;
+    }
+
+    public static Fragment newInstance() {
+        Map_Fragment fragment = new Map_Fragment();
+        return fragment;
     }
 
 
@@ -431,6 +494,7 @@ buildGoogleAPi();
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
 
         //check for permissions
         if ((ContextCompat.checkSelfPermission(getActivity(),
@@ -542,14 +606,20 @@ buildGoogleAPi();
         //  m_googleMap.setOnCameraMoveCanceledListener(this);
         m_aerisMapView.hideAnimationButton();
 
+
+
         updateLocationUI();
         getDeviceLocation();
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onResume() {
         super.onResume();
+
+        MainActivity newName = ((MainActivity)getActivity()).setActionBarTitle("Weather Radar");
+
 
         //we are resuming the map view, so check for updated options
         if (m_aerisMapView != null) {
